@@ -58,6 +58,9 @@ if ($Target.Equals("Debug")) {
     Copy-Item -Path "$TargetPath\$name.dll" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.pdb" -Destination "$plug" -Force
     Copy-Item -Path "$TargetPath\$name.dll.mdb" -Destination "$plug" -Force
+    if (Test-Path -Path "$TargetPath\Assets\Translations") {
+        Copy-Item -Path "$TargetPath\Assets\Translations" -Destination "$plug\Assets\Translations\" -Force -Recurse
+    }
     
     # set dnspy debugger env
     #$dnspy = '--debugger-agent=transport=dt_socket,server=y,address=127.0.0.1:56000,suspend=y,no-hide-debugger'
@@ -72,6 +75,9 @@ if($Target.Equals("Release")) {
     Write-Host "$PackagePath\$TargetAssembly"
     Copy-Item -Path "$TargetPath\$TargetAssembly" -Destination "$PackagePath\plugins\$TargetAssembly" -Force
     Copy-Item -Path "$ProjectPath\README.md" -Destination "$PackagePath\README.md" -Force
+    if (Test-Path -Path "$TargetPath\Assets\Translations") {
+        Copy-Item -Path "$TargetPath\Assets\Translations" -Destination "$PackagePath\Assets\Translations\" -Force -Recurse
+    }
     Compress-Archive -Path "$PackagePath\*" -DestinationPath "$TargetPath\$TargetAssembly.zip" -Force
 }
 
